@@ -1,0 +1,32 @@
+name: first_project
+description: A simple Tic Tac Toe game in Flutter.
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: "^0.13.1"
+
+
+flutter_launcher_icons:
+  android: "icon"
+  ios: true
+  image_path: "assets/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+
+flutter:
+  assets:
+    - assets/menu_image.png
+  uses-material-design: true
+  fonts:
+    - family: Shadow
+      fonts:
+        - asset: assets/fonts/ShadowsIntoLight-Regular.ttf
