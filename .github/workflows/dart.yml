@@ -21,12 +21,6 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Format code
-        run: flutter pub run dart_style:format -l 120 .
-
-      - name: Analyze code
-        run: flutter pub run flutter_launcher_icons:main
-
       - name: Build APK
         run: flutter build apk
 
