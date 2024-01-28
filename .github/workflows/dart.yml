@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Build
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Java
@@ -23,28 +23,20 @@ jobs:
         with:
           channel: 'beta'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: flutter pub get
+
+      - name: Format code
+        run: flutter format --set-exit-if-changed .
+
+      - name: Analyze code
+        run: flutter analyze .
 
       - name: Build APK
         run: flutter build apk
 
-      - name: Get Release ID
-        id: get_release_id
-        run: echo "::set-output name=release_id::$(curl -s -H \"Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}\" -X GET https://api.github.com/repos/${{ github.repository }}/releases | jq -r '.[0].id')"
-
-      - name: Upload APK Artifact
+      - name: Upload release APK
         uses: actions/upload-artifact@v2
         with:
           name: release-apk
-          path: build/app/outputs/apk/release/app-release.apk
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ steps.get_release_id.outputs.release_id }}/assets{?name,label}
-          asset_path: build/app/outputs/apk/release/app-release.apk
-          asset_name: app-release.apk
-          asset_content_type: application/octet-stream
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: build/app/outputs/flutter-apk/app-release.apk
